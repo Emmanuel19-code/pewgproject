@@ -1,9 +1,9 @@
-const express = require('express');
-const { NewUserData } = require('../controller/NewUserdata');
-const upload = require('../utils/multerConfig');
+import express from 'express';
+import { NewUserData } from '../controller/NewUserdata.js';
+import upload from '../utils/multerConfig.js';
 
 const router = express.Router();
 
 router.post('/register_pewg_member', upload.single('image'), NewUserData);
 
-module.exports = router;
+export default router;

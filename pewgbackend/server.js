@@ -1,15 +1,12 @@
-const express = require("express");
-require("dotenv/config");
-const cors = require("cors");
-const { MysqlConnection } = require("./database/mysqlConnection");
-const UserRoute = require('./routes/route');
+import express from "express";
+import cors from "cors";
+import { MysqlConnection } from "./database/mysqlConnection.js";
+import UserRoute from './routes/route.js';
 
 const app = express();
 
 app.use(express.json());
-
 app.use(cors());
-
 app.use("/api/v1/pewg", UserRoute);
 
 const startServer = async () => {

@@ -1,35 +1,32 @@
-const mysql = require('mysql2');
-const dotenv = require('dotenv');
+import mysql from 'mysql2';
+import dotenv from 'dotenv';
+import logger from '../config.js/logger.js';
 
 dotenv.config();
 
-const conn = mysql.createConnection({
+export const conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: process.env.PASSWORD,
-  database: process.env.DATABASE
+  //database: process.env.DATABASE
 });
 
-const MysqlConnection = () => {
+export const MysqlConnection = () => {
   conn.connect((err) => {
     if (err) {
-      console.error('Error connecting to the database:', err);
+      logger.error('Error connecting to the database:', err);
       return;
     }
     console.log('Connected to MySQL!');
-
-    // Create database 'pewg' if it doesn't exist
     conn.query('CREATE DATABASE IF NOT EXISTS pewg', (err, result) => {
       if (err) {
-        console.error('Error creating database:', err);
+        logger.error('Error creating database:', err);
         return;
       }
       console.log('Database created or already exists: pewg');
-
-      // Select the 'pewg' database to use for the next queries
       conn.query('USE pewg', (err) => {
         if (err) {
-          console.error('Error selecting database:', err);
+          logger.error('Error selecting database:', err);
           return;
         }
 
@@ -41,7 +38,7 @@ const MysqlConnection = () => {
             lastname VARCHAR(255),
             gender VARCHAR(10),
             mobilephonenumber VARCHAR(15),
-            password VARCHAR(255) NOT NULL,
+            password VARCHAR(255) ,
             email VARCHAR(255) NOT NULL UNIQUE,
             verifiedcode VARCHAR(50),
             userlog TEXT,
@@ -67,7 +64,7 @@ const MysqlConnection = () => {
         `;
         conn.query(createPewgMembersTable, (err, result) => {
           if (err) {
-            console.error('Error creating pewgmembers table:', err);
+            logger.error('Error creating pewgmembers table:', err);
             return;
           }
           console.log('pewgmembers table created or already exists');
@@ -91,14 +88,14 @@ const MysqlConnection = () => {
         `;
         conn.query(createUserRecordsTable, (err, result) => {
           if (err) {
-            console.error('Error creating user_records1 table:', err);
+            logger.error('Error creating user_records1 table:', err);
             return;
           }
           console.log('user_records1 table created or already exists');
         });
 
         const churcharea1 = `
-          CREATE TABLE IF NOT EXISTS churcharea (
+          CREATE TABLE IF NOT EXISTS churcharea1 (
             churchArea varchar(50),
             district varchar(50),
             local varchar(50),
@@ -111,7 +108,7 @@ const MysqlConnection = () => {
         `;
         conn.query(churcharea1, (err, result) => {
           if (err) {
-            console.log('Error creating churcharea table:', err);
+            logger.error('Error creating churcharea table:', err);
             return;
           }
           console.log('churcharea table created or already exists');
@@ -122,4 +119,4 @@ const MysqlConnection = () => {
   });
 };
 
-module.exports = { conn, MysqlConnection };
+
